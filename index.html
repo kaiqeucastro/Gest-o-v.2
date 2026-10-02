@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Controle financeiro</title>
-<link rel="stylesheet" href="/styles.css">
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <div id="login" class="loginwrap">
@@ -32,11 +32,11 @@
     <label class="month-filter">Mês do painel<select id="mes" aria-label="Mês"></select></label>
   </div>
   <nav role="tablist" aria-label="Seções financeiras">
-    <button class="nav-link" role="tab" aria-selected="true" data-v="atual"><svg class="nav-icon" aria-hidden="true" focusable="false"><use href="/icons.svg#dashboard"></use></svg>Mês atual</button>
-    <button class="nav-link" role="tab" aria-selected="false" data-v="comp"><svg class="nav-icon" aria-hidden="true" focusable="false"><use href="/icons.svg#comparison"></use></svg>Comparativo</button>
-    <button class="nav-link" role="tab" aria-selected="false" data-v="pag"><svg class="nav-icon" aria-hidden="true" focusable="false"><use href="/icons.svg#payments"></use></svg>Contas e parcelas</button>
-    <button class="nav-link" role="tab" aria-selected="false" data-v="novo"><svg class="nav-icon" aria-hidden="true" focusable="false"><use href="/icons.svg#new-entry"></use></svg>Novo lançamento</button>
-    <button class="nav-link" role="tab" aria-selected="false" data-v="relatorio"><svg class="nav-icon" aria-hidden="true" focusable="false"><use href="/icons.svg#report"></use></svg>Relatórios</button>
+    <button class="nav-link" role="tab" aria-selected="true" data-v="atual"><svg class="nav-icon" aria-hidden="true" focusable="false"><use href="icons.svg#dashboard"></use></svg>Mês atual</button>
+    <button class="nav-link" role="tab" aria-selected="false" data-v="comp"><svg class="nav-icon" aria-hidden="true" focusable="false"><use href="icons.svg#comparison"></use></svg>Comparativo</button>
+    <button class="nav-link" role="tab" aria-selected="false" data-v="pag"><svg class="nav-icon" aria-hidden="true" focusable="false"><use href="icons.svg#payments"></use></svg>Contas e parcelas</button>
+    <button class="nav-link" role="tab" aria-selected="false" data-v="novo"><svg class="nav-icon" aria-hidden="true" focusable="false"><use href="icons.svg#new-entry"></use></svg>Novo lançamento</button>
+    <button class="nav-link" role="tab" aria-selected="false" data-v="relatorio"><svg class="nav-icon" aria-hidden="true" focusable="false"><use href="icons.svg#report"></use></svg>Relatórios</button>
   </nav>
   <div class="sidebar-footer">
     <div class="sidebar-status" id="status" role="status"></div>
@@ -392,7 +392,7 @@ document.getElementById("form").addEventListener("submit",function(e){
     "Responsável":document.getElementById("fResp").value.trim(),"Forma de pagamento":document.getElementById("fForma").value.trim(),"Data de vencimento":document.getElementById("fVenc").value,Parcelas:sim?np:""};
   function done(){
     rawData.push(item);
-    start(rawData,SHEET_URL?"Dados da planilha":"Dados de exemplo");
+    start(rawData,SHEET_URL?"Dados do servidor":"Dados de demonstração");
     document.getElementById("mes").value=item.Data.slice(0,7);
     render();
     msg.textContent="Lançamento salvo.";msg.className="pos";
@@ -479,7 +479,7 @@ function enviar(obj,ok,erroEl){
     ok();
   }).catch(function(e){
     if(e.message==="sessao")return;
-    erroEl.textContent="Não foi possível salvar na planilha. Tente de novo.";erroEl.className="neg";
+    erroEl.textContent="Não foi possível salvar no servidor de dados. Verifique a implantação da API.";erroEl.className="neg";
   });
 }
 document.getElementById("contas").addEventListener("click",function(e){
@@ -550,10 +550,10 @@ function iniciar(){
   if(SHEET_URL){
     api("ler",{aba:"Lançamentos"}).then(function(r){
       if(!r.ok)throw new Error("erro");
-      rawData=r.dados||[];start(rawData,"Dados da planilha");
+      rawData=r.dados||[];start(rawData,"Dados do servidor");
     }).catch(function(e){
       if(e.message==="sessao")return;
-      rawData=[];start(rawData,"Não foi possível ler a planilha.");
+      rawData=[];start(rawData,"Não foi possível conectar ao servidor de dados.");
     });
     api("ler",{aba:"Contas"}).then(function(r){
       contas=normContas(r.ok?r.dados||[]:[]);renderContas();
@@ -607,11 +607,11 @@ document.getElementById("flogin").addEventListener("submit",function(e){
     iniciar();
   }).catch(function(){
     btn.disabled=false;
-    m.textContent="Não foi possível conectar à planilha. Confira a URL e a implantação do Apps Script.";m.className="neg";
+    m.textContent="Não foi possível conectar ao servidor de dados. O GitHub Pages hospeda a interface, mas não executa a API Python. Configure e hospede o backend para usar login e salvar dados.";m.className="neg";
   });
 });
 
-if(!SHEET_URL)document.getElementById("lDemo").textContent="Modo demonstração: nenhuma planilha conectada. Qualquer usuário e senha entram, e os dados são de exemplo. O botão do Google aqui só ilustra: ele funciona depois que você preencher SHEET_URL e GOOGLE_CLIENT_ID.";
+if(!SHEET_URL)document.getElementById("lDemo").textContent="Modo demonstração: sem servidor conectado. Qualquer usuário e senha entram, e os dados são apenas exemplos.";
 function aoGoogle(resp){
   var m=document.getElementById("lMsg");
   m.textContent="Aguarde...";m.className="";
@@ -620,7 +620,7 @@ function aoGoogle(resp){
     sessao={token:r.token,usuario:r.usuario};guarda();m.textContent="";
     iniciar();
   }).catch(function(){
-    m.textContent="Não foi possível conectar à planilha. Confira a URL e a implantação do Apps Script.";m.className="neg";
+    m.textContent="Não foi possível conectar ao servidor de dados. O GitHub Pages hospeda a interface, mas não executa a API Python. Configure e hospede o backend para usar login e salvar dados.";m.className="neg";
   });
 }
 function iniciaGoogle(){
