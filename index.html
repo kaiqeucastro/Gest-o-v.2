@@ -4,80 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Controle financeiro</title>
-<style>
-*{box-sizing:border-box}
-body{margin:0;background:#0f1729;color:#e6ebf5;font-family:"Segoe UI",system-ui,sans-serif;line-height:1.45}
-header{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #26324f}
-h1{margin:0;font-size:18px}
-.ctl{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-button,select{font:inherit;color:#e6ebf5;background:#18223b;border:1px solid #2f3d60;border-radius:6px;padding:8px 12px;cursor:pointer}
-button[aria-selected=true],button[aria-pressed=true]{background:#4f8cff;border-color:#4f8cff;color:#fff}
-button:focus-visible,select:focus-visible{outline:3px solid #93c5fd;outline-offset:2px}
-main{max-width:1000px;margin:0 auto;padding:20px}
-.view{display:none}.view.on{display:block}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
-.card{background:#18223b;border-radius:10px;padding:14px}
-.k{font-size:13px;color:#8fa0c4}
-.v{font-size:26px;font-weight:700;margin-top:4px}
-.pos{color:#4ade80}.neg{color:#fb7185}
-h2{margin:22px 0 10px;font-size:15px;font-weight:600;color:#c3cde4}
-.cat{margin-bottom:12px;font-size:14px}
-.cat .t{display:flex;justify-content:space-between}
-.track{height:8px;background:#26324f;border-radius:4px;margin-top:5px}
-.track i{display:block;height:100%;background:#4f8cff;border-radius:4px}
-.scroll{overflow-x:auto}
-table{border-collapse:collapse;width:100%;min-width:760px;font-size:14px}
-th,td{text-align:left;padding:8px 6px;border-bottom:1px solid #26324f}
-th{color:#8fa0c4;font-weight:500}
-.r{text-align:right}
-.chart{display:flex;align-items:flex-end;gap:14px;height:190px;border-bottom:2px solid #3a4a73;padding:0 4px}
-.m{flex:1;display:flex;align-items:flex-end;justify-content:center;gap:4px;height:100%}
-.m i{display:block;width:40%;border-radius:3px 3px 0 0}
-.lab{display:flex;gap:14px;padding:6px 4px;font-size:12px;color:#8fa0c4}
-.lab span{flex:1;text-align:center}
-.legend{display:flex;gap:16px;font-size:13px;margin:0 0 10px}
-.legend span:before{content:"";display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;background:var(--c)}
-#status{font-size:13px;color:#8fa0c4}
-form{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
-label[hidden]{display:none}
-label{display:flex;flex-direction:column;gap:4px;font-size:13px;color:#8fa0c4}
-input{font:inherit;color:#e6ebf5;background:#0f1729;border:1px solid #2f3d60;border-radius:6px;padding:8px 10px;width:100%}
-input:focus-visible{outline:3px solid #93c5fd;outline-offset:2px}
-.password-field{position:relative;display:block}
-.password-field input{padding-right:42px}
-.password-toggle{position:absolute;right:4px;top:50%;transform:translateY(-50%);padding:6px;border:0;background:transparent;color:#8fa0c4;line-height:0}
-.password-toggle:hover{color:#e6ebf5;background:transparent}
-.password-toggle svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-form .full{grid-column:1/-1;display:flex;gap:12px;align-items:center}
-form .go{background:#4f8cff;border-color:#4f8cff;color:#fff;font-weight:600}
-#msg{font-size:14px}
-.contas{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
-.conta{background:#18223b;border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:8px}
-.conta.quit{opacity:.55}
-.ch{display:flex;justify-content:space-between;gap:10px}
-.cv{font-weight:700;white-space:nowrap}
-.st{font-size:14px}
-.st.late{color:#fb7185;font-weight:600}.st.soon{color:#f59e0b;font-weight:600}
-.conta .track i{background:#4ade80}
-.conta button{margin-top:auto;align-self:flex-start}
-.vazio{color:#8fa0c4;font-size:14px}
-label.chk{flex-direction:row;align-items:center;gap:8px;color:#e6ebf5;font-size:14px}
-label.chk input{width:auto}
-form .full:empty{display:none}
-.loginwrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
-#login[hidden],#app[hidden]{display:none}
-.lcard{width:100%;max-width:380px}
-.mtabs{display:flex;gap:8px;margin:12px 0}
-.mtabs button{flex:1}
-#flogin{grid-template-columns:1fr}
-#quem{font-size:13px;font-weight:600}
-#gBtn{display:flex;justify-content:center;margin-top:8px}
-.sep{text-align:center;margin-top:14px}
-.donutwrap{display:flex;flex-wrap:wrap;gap:20px;align-items:center}
-.donutwrap svg{width:180px;height:180px;flex:none}
-.donutwrap .bars{flex:1;min-width:240px}
-.linha{width:100%;height:auto;display:block}
-</style>
+<link rel="stylesheet" href="/styles.css">
 </head>
 <body>
 <div id="login" class="loginwrap">
@@ -98,21 +25,26 @@ form .full:empty{display:none}
     <div id="gWrap" hidden><div class="k sep">ou</div><div id="gBtn"></div></div>
   </div>
 </div>
-<div id="app" hidden>
-<header>
-  <h1>Controle financeiro</h1>
-  <div class="ctl">
-    <span id="status"></span>
-    <span id="quem"></span><button id="sair" type="button">Sair</button>
-    <select id="mes" aria-label="Mês"></select>
-    <div role="tablist">
-      <button role="tab" aria-selected="true" data-v="atual">Mês atual</button>
-      <button role="tab" aria-selected="false" data-v="comp">Comparativo</button>
-      <button role="tab" aria-selected="false" data-v="pag">Contas e parcelas</button>
-      <button role="tab" aria-selected="false" data-v="novo">Novo lançamento</button>
-    </div>
+<div id="app" class="app-shell" hidden>
+<aside class="sidebar" aria-label="Menu principal">
+  <div class="sidebar-top">
+    <div class="brand"><span class="brand-mark" aria-hidden="true">CF</span><div><div class="brand-k">GESTÃO</div><h1>Controle financeiro</h1></div></div>
+    <label class="month-filter">Mês do painel<select id="mes" aria-label="Mês"></select></label>
   </div>
-</header>
+  <nav role="tablist" aria-label="Seções financeiras">
+    <button class="nav-link" role="tab" aria-selected="true" data-v="atual"><svg class="nav-icon" aria-hidden="true" focusable="false"><use href="/icons.svg#dashboard"></use></svg>Mês atual</button>
+    <button class="nav-link" role="tab" aria-selected="false" data-v="comp"><svg class="nav-icon" aria-hidden="true" focusable="false"><use href="/icons.svg#comparison"></use></svg>Comparativo</button>
+    <button class="nav-link" role="tab" aria-selected="false" data-v="pag"><svg class="nav-icon" aria-hidden="true" focusable="false"><use href="/icons.svg#payments"></use></svg>Contas e parcelas</button>
+    <button class="nav-link" role="tab" aria-selected="false" data-v="novo"><svg class="nav-icon" aria-hidden="true" focusable="false"><use href="/icons.svg#new-entry"></use></svg>Novo lançamento</button>
+    <button class="nav-link" role="tab" aria-selected="false" data-v="relatorio"><svg class="nav-icon" aria-hidden="true" focusable="false"><use href="/icons.svg#report"></use></svg>Relatórios</button>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="sidebar-status" id="status" role="status"></div>
+    <div class="account-footer"><span class="avatar" id="userInitial" aria-hidden="true">?</span><span id="quem"></span><button class="logout" id="sair" type="button" title="Sair da conta">Sair</button></div>
+  </div>
+</aside>
+<div class="workspace">
+<header class="page-head"><div><p class="eyebrow">CONTROLE FINANCEIRO</p><h2 id="pageTitle">Mês atual</h2></div><span id="periodLabel"></span></header>
 <main>
   <section class="view on" id="atual">
     <div class="grid" id="kpis"></div>
@@ -165,7 +97,7 @@ form .full:empty{display:none}
   <section class="view" id="comp">
     <h2>Últimos 6 meses</h2>
     <div class="card">
-      <div class="legend"><span style="--c:#4f8cff">Receitas</span><span style="--c:#f59e0b">Despesas</span></div>
+      <div class="legend"><span class="legend-income">Receitas</span><span class="legend-expense">Despesas</span></div>
       <div class="chart" id="chart"></div>
       <div class="lab" id="lab"></div>
     </div>
@@ -174,7 +106,21 @@ form .full:empty{display:none}
     <h2>Mês a mês</h2>
     <div class="card scroll"><table id="tcomp"></table></div>
   </section>
+  <section class="view" id="relatorio">
+    <div class="report-filter card">
+      <form id="reportFilter">
+        <label>Data inicial<input id="reportStart" type="date" required></label>
+        <label>Data final<input id="reportEnd" type="date" required></label>
+        <div class="full report-actions"><button class="go" type="submit">Aplicar período</button><button id="exportReport" type="button">Exportar CSV</button></div>
+      </form>
+    </div>
+    <div id="reportMessage" role="status" aria-live="polite"></div>
+    <div class="grid" id="reportSummary"></div>
+    <h2>Lançamentos do período</h2>
+    <div class="card scroll"><table id="reportTable"></table></div>
+  </section>
 </main>
+</div>
 </div>
 
 <script>
@@ -257,11 +203,11 @@ function donut(vals,total){
   var r=70,C=2*Math.PI*r,acc=0;
   var seg=vals.map(function(v,i){
     var d=total?v/total*C:0;
-    var x='<circle cx="100" cy="100" r="70" fill="none" stroke="'+PAL[i%PAL.length]+'" stroke-width="28" stroke-dasharray="'+d.toFixed(2)+' '+(C-d).toFixed(2)+'" stroke-dashoffset="'+(-acc).toFixed(2)+'" transform="rotate(-90 100 100)"/>';
+    var x='<circle class="donut-segment palette-'+(i%PAL.length)+'" cx="100" cy="100" r="70" stroke-dasharray="'+d.toFixed(2)+' '+(C-d).toFixed(2)+'" stroke-dashoffset="'+(-acc).toFixed(2)+'"/>';
     acc+=d;return x;
   }).join("");
-  return '<svg viewBox="0 0 200 200" role="img" aria-label="Gráfico de rosca das despesas por categoria"><circle cx="100" cy="100" r="70" fill="none" stroke="#26324f" stroke-width="28"/>'+seg+
-    '<text x="100" y="96" text-anchor="middle" fill="#8fa0c4" font-size="11">Despesas</text><text x="100" y="116" text-anchor="middle" fill="#e6ebf5" font-size="15" font-weight="700">'+brl(total)+'</text></svg>';
+  return '<svg viewBox="0 0 200 200" role="img" aria-label="Gráfico de rosca das despesas por categoria"><circle class="donut-track" cx="100" cy="100" r="70"/>'+seg+
+    '<text class="donut-label" x="100" y="96">Despesas</text><text class="donut-total" x="100" y="116">'+brl(total)+'</text></svg>';
 }
 function brl0(n){return n.toLocaleString("pt-BR",{style:"currency",currency:"BRL",maximumFractionDigits:0})}
 function linhaSaldo(data){
@@ -274,13 +220,13 @@ function linhaSaldo(data){
   function x(i){return data.length>1?l+i*(W-l-r)/(data.length-1):W/2}
   var pts=data.map(function(d,i){return x(i).toFixed(1)+","+y(d.t.saldo).toFixed(1)}).join(" ");
   var out='<svg class="linha" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Gráfico de linha do saldo mês a mês">'+
-    (mn<=0?'<line x1="'+l+'" x2="'+(W-r)+'" y1="'+y(0)+'" y2="'+y(0)+'" stroke="#3a4a73" stroke-dasharray="4 4"/>':'')+
-    '<polyline points="'+pts+'" fill="none" stroke="#4f8cff" stroke-width="2.5" stroke-linejoin="round"/>';
+    (mn<=0?'<line class="chart-zero" x1="'+l+'" x2="'+(W-r)+'" y1="'+y(0)+'" y2="'+y(0)+'"/>':'')+
+    '<polyline class="saldo-line" points="'+pts+'"/>';
   data.forEach(function(d,i){
     var neg=d.t.saldo<0;
-    out+='<circle cx="'+x(i).toFixed(1)+'" cy="'+y(d.t.saldo).toFixed(1)+'" r="4.5" fill="'+(neg?"#fb7185":"#4ade80")+'"/>'+
-      '<text x="'+x(i).toFixed(1)+'" y="'+(y(d.t.saldo)+(neg?20:-10)).toFixed(1)+'" text-anchor="middle" fill="#c3cde4" font-size="11">'+brl0(d.t.saldo)+'</text>'+
-      '<text x="'+x(i).toFixed(1)+'" y="'+(H-8)+'" text-anchor="middle" fill="#8fa0c4" font-size="11">'+keyLabel(d.m)+'</text>';
+    out+='<circle class="saldo-point-'+(neg?"negative":"positive")+'" cx="'+x(i).toFixed(1)+'" cy="'+y(d.t.saldo).toFixed(1)+'" r="4.5"/>'+
+      '<text class="saldo-value" x="'+x(i).toFixed(1)+'" y="'+(y(d.t.saldo)+(neg?20:-10)).toFixed(1)+'">'+brl0(d.t.saldo)+'</text>'+
+      '<text class="saldo-month" x="'+x(i).toFixed(1)+'" y="'+(H-8)+'">'+keyLabel(d.m)+'</text>';
   });
   return out+'</svg>';
 }
@@ -296,8 +242,8 @@ function renderAtual(k){
     var names=Object.keys(c).sort(function(a,b){return c[b]-c[a]});
     if(!names.length){el.innerHTML=vazio;return}
     var html=names.map(function(n,i){
-      var p=total?Math.round(c[n]/total*100):0,col=isRec?cor:PAL[i%PAL.length];
-      return '<div class="cat"><div class="t"><span>'+esc(n)+'</span><span>'+brl(c[n])+' ('+p+'%)</span></div><div class="track"><i style="width:'+p+'%;background:'+col+'"></i></div></div>';
+      var p=total?Math.round(c[n]/total*100):0,colorClass=isRec?"income":"palette-"+(i%PAL.length);
+      return '<div class="cat"><div class="t"><span>'+esc(n)+'</span><span>'+brl(c[n])+' ('+p+'%)</span></div><div class="track"><progress class="'+colorClass+'" max="100" value="'+p+'" aria-label="'+esc(n)+'"></progress></div></div>';
     }).join("");
     el.innerHTML=isRec?html:'<div class="donutwrap">'+donut(names.map(function(n){return c[n]}),total)+'<div class="bars">'+html+'</div></div>';
   }
@@ -314,9 +260,11 @@ function renderComp(k){
   var all=months(),idx=all.indexOf(k),sel=all.slice(Math.max(0,idx-5),idx+1);
   var data=sel.map(function(m){return {m:m,t:totals(m)}});
   var max=Math.max.apply(null,data.map(function(x){return Math.max(x.t.rec,x.t.des)}).concat([1]));
-  document.getElementById("chart").innerHTML=data.map(function(x){
-    return '<div class="m"><i style="height:'+(x.t.rec/max*100)+'%;background:#4f8cff"></i><i style="height:'+(x.t.des/max*100)+'%;background:#f59e0b"></i></div>';
-  }).join("");
+  var chartHeight=188,chartWidth=600,groupWidth=chartWidth/Math.max(data.length,1),barWidth=18;
+  document.getElementById("chart").innerHTML='<svg class="chart" viewBox="0 0 '+chartWidth+' 190" preserveAspectRatio="none" role="img" aria-label="Comparativo de receitas e despesas nos últimos meses">'+data.map(function(x,i){
+    var center=groupWidth*(i+0.5),incomeHeight=x.t.rec/max*chartHeight,expenseHeight=x.t.des/max*chartHeight;
+    return '<rect class="chart-income" x="'+(center-barWidth-2)+'" y="'+(190-incomeHeight)+'" width="'+barWidth+'" height="'+incomeHeight+'" rx="3"/><rect class="chart-expense" x="'+(center+2)+'" y="'+(190-expenseHeight)+'" width="'+barWidth+'" height="'+expenseHeight+'" rx="3"/>';
+  }).join("")+'</svg>';
   document.getElementById("lab").innerHTML=data.map(function(x){return "<span>"+keyLabel(x.m)+"</span>"}).join("");
   document.getElementById("saldoChart").innerHTML=linhaSaldo(data);
   document.getElementById("tcomp").innerHTML='<tr><th>Mês</th><th class="r">Salário</th><th class="r">Freelancer</th><th class="r">Receitas</th><th class="r">Despesas</th><th class="r">Saldo</th><th class="r">Variação das despesas</th></tr>'+
@@ -327,28 +275,76 @@ function renderComp(k){
     }).reverse().join("");
 }
 
+var relatorioAtual=[];
+function renderRelatorio(){
+  var inicio=pd(document.getElementById("reportStart").value),fim=pd(document.getElementById("reportEnd").value);
+  var msg=document.getElementById("reportMessage"),exportar=document.getElementById("exportReport");
+  if(!inicio||!fim||inicio>fim){
+    relatorioAtual=[];document.getElementById("reportSummary").innerHTML="";
+    document.getElementById("reportTable").innerHTML="";
+    msg.textContent="Informe um período válido.";exportar.disabled=true;return;
+  }
+  exportar.disabled=false;
+  relatorioAtual=rows.filter(function(r){return r.d>=inicio&&r.d<=fim}).sort(function(a,b){return b.d-a.d});
+  var rec=0,des=0;
+  relatorioAtual.forEach(function(r){if(r.rec)rec+=r.val;else des+=r.val});
+  document.getElementById("reportSummary").innerHTML=
+    '<div class="card"><div class="k">Receitas no período</div><div class="v pos">'+brl(rec)+'</div></div>'+
+    '<div class="card"><div class="k">Despesas no período</div><div class="v neg">'+brl(des)+'</div></div>'+
+    '<div class="card"><div class="k">Saldo do período</div><div class="v '+(rec-des<0?"neg":"pos")+'">'+brl(rec-des)+'</div></div>'+
+    '<div class="card"><div class="k">Lançamentos</div><div class="v">'+relatorioAtual.length+'</div></div>';
+  msg.textContent=relatorioAtual.length+" lançamento(s) entre "+inicio.toLocaleDateString("pt-BR")+" e "+fim.toLocaleDateString("pt-BR");
+  document.getElementById("reportTable").innerHTML='<tr><th>Data</th><th>Item</th><th>Tipo</th><th>Categoria</th><th>Responsável</th><th class="r">Valor</th><th>Pagamento</th><th>Vencimento</th><th>Parcelas</th></tr>'+(
+    relatorioAtual.length?relatorioAtual.map(function(r){
+      return '<tr><td>'+r.d.toLocaleDateString("pt-BR")+'</td><td>'+esc(r.item)+'</td><td>'+ (r.rec?"Receita":"Despesa")+'</td><td>'+esc(r.cat)+'</td><td>'+esc(r.resp)+'</td><td class="r '+(r.rec?"pos":"neg")+'">'+(r.rec?"+ ":"- ")+brl(r.val)+'</td><td>'+esc(r.forma||"-")+'</td><td>'+(r.venc?r.venc.toLocaleDateString("pt-BR"):"-")+'</td><td>'+(r.np>1?r.np+"x":"-")+'</td></tr>';
+    }).join(""):'<tr><td colspan="9" class="report-empty">Nenhum lançamento neste período.</td></tr>');
+}
+function csvField(value){
+  var text=String(value==null?"":value);
+  if(/^[\s\u0000-\u001f]*[=+\-@]/.test(text))text="'"+text;
+  return '"'+text.replace(/"/g,'""')+'"';
+}
+function exportarRelatorio(){
+  renderRelatorio();
+  var data=[["Data","Item","Tipo","Categoria","Responsável","Valor (R$)","Forma de pagamento","Vencimento","Parcelas"]];
+  relatorioAtual.forEach(function(r){
+    data.push([iso(r.d),r.item,r.rec?"Receita":"Despesa",r.cat,r.resp,r.val.toFixed(2).replace(".",","),r.forma,r.venc?iso(r.venc):"",r.np>1?r.np:"-"]);
+  });
+  var csv="\uFEFF"+data.map(function(row){return row.map(csvField).join(";")}).join("\r\n");
+  var blob=new Blob([csv],{type:"text/csv;charset=utf-8"}),url=URL.createObjectURL(blob),link=document.createElement("a");
+  link.href=url;link.download="relatorio_financeiro_"+document.getElementById("reportStart").value+"_"+document.getElementById("reportEnd").value+".csv";
+  document.body.appendChild(link);link.click();link.remove();setTimeout(function(){URL.revokeObjectURL(url)},1000);
+}
+
 function render(){
   var k=document.getElementById("mes").value;
   renderAtual(k);renderComp(k);
+  document.getElementById("periodLabel").textContent=k?keyLabel(k):"Sem lançamentos";
 }
 
 function start(raw,msg){
   rows=normalize(raw);
+  var today=hoje();
+  if(!document.getElementById("reportStart").value)document.getElementById("reportStart").value=today.slice(0,8)+"01";
+  if(!document.getElementById("reportEnd").value)document.getElementById("reportEnd").value=today;
   var ms=months(),sel=document.getElementById("mes"),prev=sel.value;
   sel.innerHTML=ms.slice().reverse().map(function(m){return '<option value="'+m+'">'+keyLabel(m)+'</option>'}).join("");
   if(prev&&ms.indexOf(prev)>-1)sel.value=prev;
   fillLists();
   document.getElementById("status").textContent=msg;
-  render();
+  render();renderRelatorio();
 }
 
 document.getElementById("mes").addEventListener("change",render);
-document.querySelectorAll("header [role=tab]").forEach(function(b){
+document.querySelectorAll(".sidebar [role=tab]").forEach(function(b){
   b.addEventListener("click",function(){
-    document.querySelectorAll("header [role=tab]").forEach(function(x){x.setAttribute("aria-selected",x===b?"true":"false")});
+    document.querySelectorAll(".sidebar [role=tab]").forEach(function(x){x.setAttribute("aria-selected",x===b?"true":"false")});
     document.querySelectorAll(".view").forEach(function(v){v.classList.toggle("on",v.id===b.dataset.v)});
+    document.getElementById("pageTitle").textContent=b.textContent.trim();
   });
 });
+document.getElementById("reportFilter").addEventListener("submit",function(e){e.preventDefault();renderRelatorio()});
+document.getElementById("exportReport").addEventListener("click",exportarRelatorio);
 
 var rawData=[];
 
@@ -468,7 +464,7 @@ function renderContas(){
     }
     if(c.parc){
       var rest=Math.max(c.n-c.pagas,0),p=c.n?Math.round(Math.min(c.pagas,c.n)/c.n*100):0;
-      x+='<div class="track"><i style="width:'+p+'%"></i></div><div class="k">'+Math.min(c.pagas,c.n)+' de '+c.n+' pagas · '+rest+(rest===1?" falta":" faltam");
+      x+='<div class="track"><progress max="100" value="'+p+'" aria-label="Parcelas pagas"></progress></div><div class="k">'+Math.min(c.pagas,c.n)+' de '+c.n+' pagas · '+rest+(rest===1?" falta":" faltam");
       if(!q){var u=addMes(c.venc,rest-1);x+=' · última em '+MESES[u.getMonth()]+'/'+String(u.getFullYear()).slice(2)+' · falta pagar '+brl(c.valor*rest)}
       x+='</div>';
     }
@@ -540,6 +536,7 @@ function sair(expirou){
   document.getElementById("app").hidden=true;
   document.getElementById("login").hidden=false;
   document.getElementById("lPass").value="";
+  document.getElementById("userInitial").textContent="?";
   var m=document.getElementById("lMsg");
   m.textContent=expirou?"Sua sessão expirou. Entre novamente.":"";m.className="";
 }
@@ -549,6 +546,7 @@ function iniciar(){
   document.getElementById("login").hidden=true;
   document.getElementById("app").hidden=false;
   document.getElementById("quem").textContent=sessao.usuario;
+  document.getElementById("userInitial").textContent=(sessao.usuario.trim().charAt(0)||"?").toUpperCase();
   if(SHEET_URL){
     api("ler",{aba:"Lançamentos"}).then(function(r){
       if(!r.ok)throw new Error("erro");

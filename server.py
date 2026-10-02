@@ -293,12 +293,22 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.write(body)
 
     def do_GET(self):
-        if urlparse(self.path).path not in ("/", "/Index.html"):
+        path = urlparse(self.path).path
+        if path in ("/", "/index.html", "/Index.html"):
+            file_path = ROOT / "index.html"
+            content_type = "text/html; charset=utf-8"
+        elif path == "/styles.css":
+            file_path = ROOT / "styles.css"
+            content_type = "text/css; charset=utf-8"
+        elif path == "/icons.svg":
+            file_path = ROOT / "icons.svg"
+            content_type = "image/svg+xml; charset=utf-8"
+        else:
             self.send_error(404)
             return
-        body = (ROOT / "Index.html").read_bytes()
+        body = file_path.read_bytes()
         self.send_response(200)
-        self.send_header("Content-Type", "text/html; charset=utf-8")
+        self.send_header("Content-Type", content_type)
         self.send_header("Content-Length", str(len(body)))
         self.end_headers()
         self.wfile.write(body)

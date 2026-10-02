@@ -7,8 +7,8 @@
         {
             "type": "chrome",
             "request": "launch",
-            "name": "Open Index.html",
-            "file": "c:\\Users\\kaique.dornelas_exte\\Desktop\\Gest-Finaceira\\Index.html"
+            "name": "Open index.html",
+            "file": "c:\\Users\\kaique.dornelas_exte\\Desktop\\Gest-Finaceira\\index.html"
         }
     ]
 }
