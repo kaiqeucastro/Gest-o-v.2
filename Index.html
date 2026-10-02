@@ -43,6 +43,11 @@ label[hidden]{display:none}
 label{display:flex;flex-direction:column;gap:4px;font-size:13px;color:#8fa0c4}
 input{font:inherit;color:#e6ebf5;background:#0f1729;border:1px solid #2f3d60;border-radius:6px;padding:8px 10px;width:100%}
 input:focus-visible{outline:3px solid #93c5fd;outline-offset:2px}
+.password-field{position:relative;display:block}
+.password-field input{padding-right:42px}
+.password-toggle{position:absolute;right:4px;top:50%;transform:translateY(-50%);padding:6px;border:0;background:transparent;color:#8fa0c4;line-height:0}
+.password-toggle:hover{color:#e6ebf5;background:transparent}
+.password-toggle svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 form .full{grid-column:1/-1;display:flex;gap:12px;align-items:center}
 form .go{background:#4f8cff;border-color:#4f8cff;color:#fff;font-weight:600}
 #msg{font-size:14px}
@@ -83,8 +88,8 @@ form .full:empty{display:none}
       <button type="button" class="mtab" data-m="criar" aria-pressed="false">Criar conta</button>
     </div>
     <form id="flogin">
-      <label>Usuário<input id="lUser" autocomplete="username" required maxlength="30"></label>
-      <label>Senha<input id="lPass" type="password" autocomplete="current-password" required></label>
+      <label>Usuário<input id="lUser" autocomplete="username" required></label>
+      <label>Senha<span class="password-field"><input id="lPass" type="password" autocomplete="current-password" required><button class="password-toggle" id="togglePass" type="button" aria-label="Mostrar senha" title="Mostrar senha"><svg id="eyeShow" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg><svg id="eyeHide" viewBox="0 0 24 24" aria-hidden="true" hidden><path d="M3 3l18 18M10.6 10.6a2 2 0 0 0 2.8 2.8"/><path d="M9.9 5.2A10.8 10.8 0 0 1 12 5c6.4 0 10 7 10 7a14.8 14.8 0 0 1-3.1 3.8M6.2 6.2C3.5 8.1 2 12 2 12s3.6 7 10 7a10.8 10.8 0 0 0 3-.4"/></svg></button></span></label>
       <label id="lConv" hidden>Código de convite<input id="lCod" autocomplete="off"></label>
       <button class="go" type="submit" id="lBtn">Entrar</button>
       <div id="lMsg" role="status"></div>
@@ -173,8 +178,8 @@ form .full:empty{display:none}
 </div>
 
 <script>
-// 1) Cole aqui a URL do seu app da Web (Apps Script). Vazio = dados de exemplo.
-var SHEET_URL = "";
+// API local com banco SQLite.
+var SHEET_URL = "/api";
 // 1b) Opcional: ID do cliente OAuth do Google para mostrar o botão "Entrar com Google".
 var GOOGLE_CLIENT_ID = "";
 
@@ -563,14 +568,26 @@ function iniciar(){
 
 var modo="entrar";
 var ERROS={credenciais:"Usuário ou senha incorretos.",bloqueado:"Muitas tentativas. Aguarde 15 minutos e tente de novo.",
-  convite:"Código de convite inválido.",usuario:"Use de 3 a 30 caracteres: letras minúsculas, números, ponto, hífen ou sublinhado, começando por letra ou número.",
-  senha:"A senha precisa ter pelo menos 8 caracteres.",existe:"Esse usuário já existe.",google:"Não foi possível validar sua conta Google. Tente de novo.",negado:"Esse e-mail não tem permissão para entrar. Peça ao administrador para liberá-lo."};
+  convite:"Código de convite inválido.",usuario:"Informe um usuário.",
+  senha:"A senha deve ter pelo menos 8 caracteres, uma letra maiúscula, um número e um caractere especial.",existe:"Esse usuário já existe.",google:"Não foi possível validar sua conta Google. Tente de novo.",negado:"Esse e-mail não tem permissão para entrar. Peça ao administrador para liberá-lo."};
+function senhaVisivel(visivel){
+  var campo=document.getElementById("lPass"),botao=document.getElementById("togglePass");
+  campo.type=visivel?"text":"password";
+  botao.setAttribute("aria-label",visivel?"Ocultar senha":"Mostrar senha");
+  botao.title=visivel?"Ocultar senha":"Mostrar senha";
+  document.getElementById("eyeShow").hidden=visivel;
+  document.getElementById("eyeHide").hidden=!visivel;
+}
+document.getElementById("togglePass").addEventListener("click",function(){
+  senhaVisivel(document.getElementById("lPass").type==="password");
+});
 document.querySelectorAll(".mtab").forEach(function(b){
   b.addEventListener("click",function(){
     modo=b.dataset.m;
+    senhaVisivel(false);
     document.querySelectorAll(".mtab").forEach(function(x){x.setAttribute("aria-pressed",x===b?"true":"false")});
     document.getElementById("lConv").hidden=modo!=="criar";
-    document.getElementById("lCod").required=modo==="criar"&&!!SHEET_URL;
+    document.getElementById("lCod").required=false;
     document.getElementById("lBtn").textContent=modo==="criar"?"Criar conta":"Entrar";
     document.getElementById("lPass").autocomplete=modo==="criar"?"new-password":"current-password";
     document.getElementById("lMsg").textContent="";
@@ -580,8 +597,9 @@ document.getElementById("flogin").addEventListener("submit",function(e){
   e.preventDefault();
   var m=document.getElementById("lMsg"),btn=document.getElementById("lBtn");
   var u=document.getElementById("lUser").value.trim().toLowerCase(),senha=document.getElementById("lPass").value;
+  if(!u){m.textContent=ERROS.usuario;m.className="neg";return}
   if(!SHEET_URL){sessao={token:"demo",usuario:u};document.getElementById("lPass").value="";iniciar();return}
-  if(modo==="criar"&&senha.length<8){m.textContent=ERROS.senha;m.className="neg";return}
+  if(modo==="criar"&&(senha.length<8||!/[A-Z]/.test(senha)||!/[0-9]/.test(senha)||!/[^A-Za-z0-9\s]/.test(senha))){m.textContent=ERROS.senha;m.className="neg";return}
   m.textContent="Aguarde...";m.className="";btn.disabled=true;
   api(modo,{usuario:u,senha:senha,convite:document.getElementById("lCod").value}).then(function(r){
     btn.disabled=false;
